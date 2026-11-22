@@ -15,6 +15,11 @@
 
     <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
 
+    <!-- TeraDrive: no advertising ID. Strip it in case a Google library merges it in, so the Play declaration "does not use advertising ID" stays true. -->
+    <uses-permission
+        android:name="com.google.android.gms.permission.AD_ID"
+        tools:node="remove"/>
+
     <!-- Used for document scanning, but lib declares it as required, which it's not -->
     <uses-feature
         android:name="android.hardware.camera2"
