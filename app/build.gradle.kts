@@ -73,6 +73,7 @@ val versionMajor = 35
 val versionMinor = 0
 val versionPatch = 2
 val versionBuild = 90 // 0-50=Alpha / 51-98=RC / 90-99=stable
+val teraDriveVersionCode = 1 // TeraDrive Play release counter; raise by one per upload
 
 val ndkEnv = buildMap {
     file("${project.rootDir}/ndk.env").readLines().forEach {
@@ -147,7 +148,11 @@ android {
         testInstrumentationRunner = if (shotTest) "com.karumi.shot.ShotTestRunner"
         else "com.nextcloud.client.TestRunner"
 
-        versionCode = versionMajor * 10000000 + versionMinor * 10000 + versionPatch * 100 + versionBuild
+        // TeraDrive: our own release counter, +1 for every Play upload (1 = 35.0.2, the first
+        // internal test, 2026-11-23). Upstream's major*10^7 scheme gave 350000290, which Play
+        // refuses as a first version code (too close to its 2100000000 limit); a code once
+        // uploaded can never be lowered. versionName stays upstream's.
+        versionCode = teraDriveVersionCode
         versionName = when {
             versionBuild > 89 -> "${versionMajor}.${versionMinor}.${versionPatch}"
             versionBuild > 50 -> "${versionMajor}.${versionMinor}.${versionPatch} RC" + (versionBuild - 50)
