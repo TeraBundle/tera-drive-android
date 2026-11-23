@@ -90,7 +90,26 @@ val ncTestServerUsername = configProps["NC_TEST_SERVER_USERNAME"]
 val ncTestServerPassword = configProps["NC_TEST_SERVER_PASSWORD"]
 val ncTestServerBaseUrl = configProps["NC_TEST_SERVER_BASEURL"]
 
+// TeraDrive: a value from a system property, the environment (TeamCity), or -P; empty if none.
+fun buildProp(key: String): String =
+    System.getProperty(key) ?: System.getenv(key) ?: (project.findProperty(key) as String?) ?: ""
+
 android {
+    // TeraDrive: Play upload key. The keystore lives in <agents>/.keys/.android/, never in this
+    // repo; its path and passwords come from <agents>/.keys/tera-drive-android.properties via
+    // the environment. Without them a release build is left unsigned.
+    signingConfigs {
+        create("upload") {
+            val path = buildProp("UPLOAD_KEYSTORE_PATH")
+            if (path.isNotEmpty()) {
+                storeFile = file(path)
+                storePassword = buildProp("UPLOAD_KEYSTORE_PASSWORD")
+                keyAlias = buildProp("UPLOAD_KEY_ALIAS")
+                keyPassword = buildProp("UPLOAD_KEY_PASSWORD")
+            }
+        }
+    }
+
     // install this NDK version and CMake to produce smaller APKs. Build will still work if not installed
     ndkVersion = "${ndkEnv["NDK_VERSION"]}"
     externalNativeBuild {
@@ -143,6 +162,9 @@ android {
         buildTypes {
             release {
                 buildConfigField("String", "NC_TEST_SERVER_DATA_STRING", "\"\"")
+                if (buildProp("UPLOAD_KEYSTORE_PATH").isNotEmpty()) {
+                    signingConfig = signingConfigs.getByName("upload")
+                }
             }
 
             debug {
