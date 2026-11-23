@@ -84,7 +84,8 @@
     <bool name="device_credentials_enabled">true</bool>
     <bool name="show_hidden_files_enabled">true</bool>
     <bool name="davdroid_integration_enabled">true</bool>
-    <bool name="help_enabled">true</bool>
+    <!-- TeraDrive: no help site yet; Nextcloud's forum was the target -->
+    <bool name="help_enabled">false</bool>
     <string name="url_help">https://help.nextcloud.com/c/clients/android/</string>
     <bool name="privacy_enabled">true</bool>
     <string name="privacy_url">https://drive.terabundle.com/privacy</string>
@@ -120,7 +121,7 @@
     <string name="translation_link" translatable="false">https://app.transifex.com/nextcloud/nextcloud/android/</string>
     <string name="contributing_link" translatable="false">https://github.com/nextcloud/android/blob/master/CONTRIBUTING.md</string>
     <!-- For semi-automated bug report creation -->
-    <string name="report_issue_link" translatable="false">https://github.com/nextcloud/android/issues/new?template=bug_report.yml</string>
+    <string name="report_issue_link" translatable="false">mailto:support@terabundle.com?subject=TeraDrive%20app%20error</string>
     <!-- For manual report from user -->
     <string name="report_issue_empty_link" translatable="false">https://github.com/nextcloud/android/issues/new/choose</string>
 
