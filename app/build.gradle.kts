@@ -184,10 +184,10 @@ android {
             register("generic") {
                 applicationId = "com.terabundle.drive"
                 dimension = "default"
-                // TeraDrive: Firebase test builds (genericDebug) count up with TeamCity's build
-                // counter, from above the 350000290 of the first Firebase build (2026-11-12) so
-                // they install over it. Play builds are gplay and keep teraDriveVersionCode.
-                versionCode = 350001000 + (buildProp("BUILD_NUMBER").toIntOrNull() ?: 0)
+                // TeraDrive: Firebase test builds (genericDebug) take TeamCity's build counter as
+                // their version code, so each installs over the last; 1 for a local build.
+                // Play builds are gplay and keep teraDriveVersionCode.
+                versionCode = buildProp("BUILD_NUMBER").toIntOrNull()?.takeIf { it > 0 } ?: 1
             }
 
             register("gplay") {
