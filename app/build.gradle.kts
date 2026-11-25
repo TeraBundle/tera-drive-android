@@ -74,6 +74,7 @@ val versionMinor = 0
 val versionPatch = 2
 val versionBuild = 90 // 0-50=Alpha / 51-98=RC / 90-99=stable
 val teraDriveVersionCode = 1 // TeraDrive Play release counter; raise by one per upload
+val teraDriveVersionName = "1.0.0" // TeraDrive's own version, shown to users; base: Nextcloud 35.0.2
 
 val ndkEnv = buildMap {
     file("${project.rootDir}/ndk.env").readLines().forEach {
@@ -153,11 +154,9 @@ android {
         // refuses as a first version code (too close to its 2100000000 limit); a code once
         // uploaded can never be lowered. versionName stays upstream's.
         versionCode = teraDriveVersionCode
-        versionName = when {
-            versionBuild > 89 -> "${versionMajor}.${versionMinor}.${versionPatch}"
-            versionBuild > 50 -> "${versionMajor}.${versionMinor}.${versionPatch} RC" + (versionBuild - 50)
-            else -> "${versionMajor}.${versionMinor}.${versionPatch} Alpha" + (versionBuild + 1)
-        }
+        // TeraDrive: our own version name (decided 2026-11-25), raised when we change the app;
+        // the Nextcloud base it is built on is versionMajor.versionMinor.versionPatch above.
+        versionName = teraDriveVersionName
 
         // adapt structure from Eclipse to Gradle/Android Studio expectations;
         // see http://tools.android.com/tech-docs/new-build-system/user-guide#TOC-Configuring-the-Structure
